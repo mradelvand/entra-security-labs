@@ -4,7 +4,7 @@
 
 A public, community-focused lab resource for intermediate admins and security engineers working with Microsoft Entra ID. Every post covers a real pattern, real incident, or real misconfiguration — with hands-on steps you can follow in your own tenant.
 
-**Live site:** https://YOUR-GITHUB-USERNAME.github.io/entra-security-labs/
+**Live site:** https://mradelvand.github.io/entra-security-labs/
 
 ---
 
@@ -12,8 +12,8 @@ A public, community-focused lab resource for intermediate admins and security en
 
 | Series | Posts | Exam alignment |
 |---|---|---|
-| [Conditional Access](https://YOUR-GITHUB-USERNAME.github.io/entra-security-labs/docs/conditional-access/overview) | 4 | SC-300 · AZ-500 · MS-102 |
-| [Identity Protection](https://YOUR-GITHUB-USERNAME.github.io/entra-security-labs/docs/identity-protection/overview) | 1 | SC-300 · AZ-500 |
+| [Conditional Access](https://mradelvand.github.io/entra-security-labs/docs/conditional-access/overview) | 4 | SC-300 · AZ-500 · MS-102 |
+| [Identity Protection](https://mradelvand.github.io/entra-security-labs/docs/identity-protection/overview) | 1 | SC-300 · AZ-500 |
 | Privileged Identity Management | Coming soon | SC-300 · AZ-500 |
 | Authentication Methods | Coming soon | SC-300 · MS-102 |
 
