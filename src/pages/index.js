@@ -91,7 +91,7 @@ export default function Home() {
             </Link>
             <a
               className="hero-cta-secondary"
-              href="https://github.com/YOUR-GITHUB-USERNAME/entra-security-labs"
+              href="https://github.com/mradelvand/entra-security-labs"
               target="_blank"
               rel="noreferrer"
             >
