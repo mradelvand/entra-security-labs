@@ -6,9 +6,9 @@ const config = {
   title: 'Entra Security Labs',
   tagline: 'Real-world identity security. Deeper than docs, deeper than exam prep.',
   favicon: 'img/favicon.ico',
-  url: 'https://YOUR-GITHUB-USERNAME.github.io',
+  url: 'https://mradelvand.github.io',
   baseUrl: '/entra-security-labs/',
-  organizationName: 'YOUR-GITHUB-USERNAME',
+  organizationName: 'mradelvand',
   projectName: 'entra-security-labs',
   trailingSlash: false,
   onBrokenLinks: 'warn',
@@ -26,7 +26,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/YOUR-GITHUB-USERNAME/entra-security-labs/edit/main/',
+          editUrl: 'https://github.com/mradelvand/entra-security-labs/edit/main/',
         },
         blog: false,
         theme: {
@@ -73,7 +73,7 @@ const config = {
             position: 'left',
           },
           {
-            href: 'https://github.com/YOUR-GITHUB-USERNAME/entra-security-labs',
+            href: 'https://github.com/mradelvand/entra-security-labs',
             label: 'GitHub',
             position: 'right',
           },
@@ -102,8 +102,8 @@ const config = {
           {
             title: 'More',
             items: [
-              { label: 'GitHub', href: 'https://github.com/YOUR-GITHUB-USERNAME/entra-security-labs' },
-              { label: 'Report an Issue', href: 'https://github.com/YOUR-GITHUB-USERNAME/entra-security-labs/issues' },
+              { label: 'GitHub', href: 'https://github.com/mradelvand/entra-security-labs' },
+              { label: 'Report an Issue', href: 'https://github.com/mradelvand/entra-security-labs/issues' },
             ],
           },
         ],
