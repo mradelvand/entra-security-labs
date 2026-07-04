@@ -53,6 +53,11 @@ const config = {
         },
         items: [
           {
+            to: '/docs/az-104-identities-governance/overview',
+            label: 'AZ-104',
+            position: 'left',
+          },
+          {
             to: '/docs/conditional-access/overview',
             label: 'Conditional Access',
             position: 'left',
@@ -85,6 +90,7 @@ const config = {
           {
             title: 'Series',
             items: [
+              { label: 'AZ-104 · Identities & Governance', to: '/docs/az-104-identities-governance/overview' },
               { label: 'Conditional Access', to: '/docs/conditional-access/overview' },
               { label: 'Identity Protection', to: '/docs/identity-protection/overview' },
               { label: 'PIM', to: '/docs/privileged-identity-management/overview' },

@@ -3,6 +3,14 @@ const sidebars = {
   docs: [
     {
       type: 'category',
+      label: '🏛️ AZ-104 · Identities & Governance',
+      link: { type: 'doc', id: 'az-104-identities-governance/overview' },
+      items: [
+        'az-104-identities-governance/02-rbac-access-management',
+      ],
+    },
+    {
+      type: 'category',
       label: '🔐 Conditional Access',
       link: { type: 'doc', id: 'conditional-access/overview' },
       items: [
