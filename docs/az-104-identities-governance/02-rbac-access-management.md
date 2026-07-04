@@ -268,13 +268,13 @@ Neither `az role assignment list` nor the default IAM CSV export includes them. 
 <details><summary>Answer</summary>Yes. NotActions only subtracts from that role's own Actions list — it isn't a deny and can't block a grant coming from a separate role assignment.</details>
 
 **3.** Which two built-in roles can assign roles to other users?
-<details><summary>Answer</summary>Owner and User Access Administrator. Contributor explicitly excludes <code>Microsoft.Authorization/*/Write</code> and <code>*/Delete</code> in its NotActions.</details>
+<details><summary>Answer</summary>Owner and User Access Administrator. Contributor explicitly excludes `Microsoft.Authorization/*/Write` and `*/Delete` in its NotActions.</details>
 
-**4.** A user holds a PIM-eligible assignment for Owner but hasn't activated it. Does it appear in <code>az role assignment list --all</code>?
+**4.** A user holds a PIM-eligible assignment for Owner but hasn't activated it. Does it appear in `az role assignment list --all`?
 <details><summary>Answer</summary>No. Eligible assignments are a separate object type with no active roleAssignment record until activation — you have to query PIM directly to see them.</details>
 
-**5.** A custom role grants only <code>Microsoft.Compute/virtualMachines/read</code> at a resource group scope, but the assigned user sees the resource group as empty in the portal. What's the most likely missing permission?
-<details><summary>Answer</summary><code>Microsoft.Resources/subscriptions/resourceGroups/read</code> — the portal needs this container-level read before it will render anything inside a resource group.</details>
+**5.** A custom role grants only `Microsoft.Compute/virtualMachines/read` at a resource group scope, but the assigned user sees the resource group as empty in the portal. What's the most likely missing permission?
+<details><summary>Answer</summary>`Microsoft.Resources/subscriptions/resourceGroups/read` — the portal needs this container-level read before it will render anything inside a resource group.</details>
 
 **6.** A security group has "Microsoft Entra roles can be assigned to this group" set to No. Can it still receive the Contributor role on a resource group?
 <details><summary>Answer</summary>Yes. That setting only governs eligibility for Microsoft Entra ID directory roles. It has no effect on Azure RBAC roles like Owner, Contributor, or Reader.</details>
@@ -283,7 +283,7 @@ Neither `az role assignment list` nor the default IAM CSV export includes them. 
 <details><summary>Answer</summary>It becomes orphaned rather than removed — the principal shows as "Unknown" or "Identity not found," while the underlying object ID, role, and scope remain until manually deleted.</details>
 
 **8.** What determines where a custom role definition is allowed to be assigned?
-<details><summary>Answer</summary>The <code>AssignableScopes</code> property. It constrains which scopes an administrator can later choose when creating an actual role assignment using that role — it doesn't grant access by itself.</details>
+<details><summary>Answer</summary>The `AssignableScopes` property. It constrains which scopes an administrator can later choose when creating an actual role assignment using that role — it doesn't grant access by itself.</details>
 
 ---
 
