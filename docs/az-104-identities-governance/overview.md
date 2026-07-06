@@ -7,7 +7,7 @@ sidebar_label: Overview
 # AZ-104 · Identities & Governance
 
 **Series:** AZ-104 · Identities & Governance  
-**Posts:** 1 published · more coming  
+**Posts:** 2 published · more coming  
 **Exam alignment:** AZ-104
 
 ---
@@ -32,6 +32,7 @@ Every post assumes a working Azure subscription and Entra ID tenant with a few l
 |---|---|---|---|
 | 01 | Tutorial | Entra ID Identity Management — Users, Groups, and SSPR | *Coming soon* |
 | 02 | Concept + Lab | [RBAC & Access Management — Roles, Scope, and the Additive Model](./02-rbac-access-management) | AZ-104 · AZ-500 |
+| 03 | Concept + Lab | [Azure Policy & Governance — Definitions, Effects, and Remediation](./03-azure-policy-governance) | AZ-104 · AZ-500 |
 
 ---
 
@@ -42,3 +43,5 @@ Every post assumes a working Azure subscription and Entra ID tenant with a few l
 - **Two role systems that look identical in the portal** — Microsoft Entra ID directory roles vs. Azure RBAC roles, and why the "role-assignable group" toggle only matters for one of them
 - **The audit report that's quietly incomplete** — why a standard CSV export of role assignments never contains PIM-eligible, time-bound access, and how to pull that data separately
 - **Orphaned assignments** — what happens to a role assignment when the identity behind it is deleted, and why nothing cleans it up automatically
+- **Two built-in policies with almost identical names that do completely different things** — "Require a tag on resource groups" vs. "Require a tag and its value on resources," and the real incident where assigning the wrong one let a non-compliant resource through with no error
+- **Resource locks apply outside RBAC entirely** — why an Owner can't just override a lock, why locks inherit downward the same way RBAC and Policy assignments do, and what happens when a resource inherits two overlapping locks at once
