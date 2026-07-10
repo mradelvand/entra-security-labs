@@ -37,6 +37,15 @@ Every post assumes a working Azure subscription and Azure CLI access (Cloud Shel
 ## What this series covers that the challenge instructions don't
 
 - **Why `Standard_LRS` → `Standard_GRS` is a one-line update, but adding zone redundancy isn't** — `az storage account update --sku` handles geo-replication changes; anything that adds zone redundancy (LRS→ZRS, GRS→GZRS) is rejected outright and has to go through `az storage account migration start`, a separate async process that can take up to 72 hours just to *begin*
+
+**The Scenario:** The CTO demands Zone Redundancy today. You try `az storage account update --sku Standard_ZRS` and it fails.
+**Simplified Reality: GRS is easy, but ZRS is tricky:**
+
+**LRS (Local Redundancy) → GRS (Geo-Redundant Storage):** Simple: Azure just copies your data to another entire region (like moving files to a backup server across the ocean).  Fast: You can update in one command—no big wait.
+
+**LRS → ZRS (Zone-Redundant Storage):** Harder: ZRS spreads your data inside the same region across three separate physical locations (like splitting files into three different buildings).  No instant switch: You can’t just click—Azure needs to physically move your data (like relocating servers), which takes hours/days and depends on your data size.
+
+
 - **The gap between "the SKU says GRS" and "your data is actually in the second region"** — the metadata flips instantly, the replication doesn't
 - **Why a stored access policy beats a standalone SAS token in production** — and the exact command sequence to revoke access without touching account keys
 - **The firewall rule that "worked" and then silently stopped working** — Azure Storage firewall changes aren't instant, and the fix most people reach for for Cloud Shell lockouts doesn't actually hold up
