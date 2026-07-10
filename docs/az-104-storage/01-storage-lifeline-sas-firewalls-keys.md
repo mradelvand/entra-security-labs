@@ -402,8 +402,43 @@ GZRS · LRS · GRS · ZRS
 ## Cleanup
 
 ```bash
-az group delete --name rg-az104-storage-incident --yes --no-wait
+# Check for anything that could block deletion — resource locks are the
+# most common silent cause
+az lock list --resource-group $RG -o table
 ```
+
+If that returns a lock, remove it before anything else — a `CanNotDelete` lock on the resource group or the storage account will block cleanup outright, and it won't necessarily show you why:
+
+```bash
+az lock delete --name <lock-name> --resource-group $RG
+```
+
+```bash
+# Delete the storage account directly first — this isolates whether the
+# account itself is stuck, separately from the resource group around it
+az storage account delete --name $STORAGE_NAME --resource-group $RG --yes
+
+# Now delete the resource group. --no-wait is intentionally left off here:
+# it returns instantly and hides any real failure (a lock, a policy denial)
+# behind what looks like a clean exit. Let it run in the foreground once so
+# you actually see whether it succeeded.
+az group delete --name $RG --yes
+
+# Don't just trust the exit code — confirm it's actually gone
+az group exists --name $RG
+```
+
+**If `az group exists` still returns `true` after that:** something is actively rejecting the delete, not just running slowly. Check the activity log for the real reason:
+
+```bash
+az monitor activity-log list \
+  --resource-group $RG \
+  --offset 1h \
+  --query "[?operationName.value=='Microsoft.Resources/subscriptions/resourcegroups/delete'].{status:status.value, time:eventTimestamp}" \
+  -o table
+```
+
+A `Failed` entry there will point at the actual blocker — a lock, an Azure Policy `Deny` effect (worth checking if you have a subscription-wide policy assignment from the governance labs), or a resource still mid-operation from an earlier checkpoint.
 
 ---
 
