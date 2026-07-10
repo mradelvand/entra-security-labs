@@ -3,15 +3,24 @@ const sidebars = {
   docs: [
     {
       type: 'category',
-      label: '🏛️ AZ-104 · Identities & Governance',
+      label: ' AZ-104 · Identities & Governance',
       link: { type: 'doc', id: 'az-104-identities-governance/overview' },
       items: [
         'az-104-identities-governance/02-rbac-access-management',
+        'az-104-identities-governance/03-azure-policy-governance',
       ],
     },
     {
       type: 'category',
-      label: '🔐 Conditional Access',
+      label: ' AZ-104 · Storage & Data Protection',
+      link: { type: 'doc', id: 'az-104-storage/overview' },
+      items: [
+        'az-104-storage/01-storage-lifeline-sas-firewalls-keys',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Conditional Access',
       link: { type: 'doc', id: 'conditional-access/overview' },
       items: [
         'conditional-access/01-troubleshooting-ca-with-audit-logs',
@@ -22,7 +31,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: '🛡️ Identity Protection',
+      label: 'Identity Protection',
       link: { type: 'doc', id: 'identity-protection/overview' },
       items: [
         'identity-protection/01-risk-based-ca-gaps',
@@ -30,13 +39,13 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: '👑 Privileged Identity Management',
+      label: 'Privileged Identity Management',
       link: { type: 'doc', id: 'privileged-identity-management/overview' },
       items: [],
     },
     {
       type: 'category',
-      label: '🔑 Authentication Methods',
+      label: 'Authentication Methods',
       link: { type: 'doc', id: 'authentication-methods/overview' },
       items: [],
     },

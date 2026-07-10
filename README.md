@@ -13,6 +13,7 @@ A public, community-focused lab resource for intermediate admins and security en
 | Series | Posts | Exam alignment |
 |---|---|---|
 | [AZ-104 · Identities & Governance](https://mradelvand.github.io/entra-security-labs/docs/az-104-identities-governance/overview) | 1 | AZ-104 · AZ-500 |
+| [AZ-104 · Storage & Data Protection](https://mradelvand.github.io/entra-security-labs/docs/az-104-storage/overview) | 1 | AZ-104 · AZ-500 |
 | [Conditional Access](https://mradelvand.github.io/entra-security-labs/docs/conditional-access/overview) | 4 | SC-300 · AZ-500 · MS-102 |
 | [Identity Protection](https://mradelvand.github.io/entra-security-labs/docs/identity-protection/overview) | 1 | SC-300 · AZ-500 |
 | Privileged Identity Management | Coming soon | SC-300 · AZ-500 |
