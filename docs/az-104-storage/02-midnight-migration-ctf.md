@@ -19,7 +19,7 @@ You are a newly hired Azure Cloud Administrator for Globex Corporation.
 
 Globex has just acquired a smaller startup, and you have been tasked with setting up a secure, cost-optimized cloud storage environment to migrate the startup's data. However, you must navigate strict corporate security policies and an upcoming audit. There are 5 Flags you must capture by completing the administrative tasks correctly using the Azure CLI.
 
-> ** Editor's note — Extended Edition:** The original 5-flag CTF is preserved below exactly as written. A few things have been added:
+> The original 5-flag CTF is preserved below exactly as written. A few things have been added:
 > 1. **Bonus Flags 3B and 4B**, inserted right after Phases 3 and 4, which answer two open questions raised while building this ("what do I actually give developers?" and "what about an entire deleted folder, not just one file or the whole container?").
 > 2. **Phase 6 and Phase 7**, two brand-new phases covering **blob snapshots & versioning** and **Blob Storage vs. Azure Files**, each capturing their own flag.
 > 3. ** Cost Callouts** throughout every phase — soft delete, tiering, versioning, RBAC, guest identities, and Azure Files billing all have real cost implications that aren't obvious from the CLI alone, so each one gets flagged where it's introduced, plus a consolidated cheat sheet at the end.
