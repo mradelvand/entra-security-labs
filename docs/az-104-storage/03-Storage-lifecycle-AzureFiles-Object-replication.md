@@ -1,3 +1,16 @@
+---
+id: 03-storage-lifecycle-azurefiles-object-replication
+title: AZ-104 Challenge 06: Project Deep Freeze
+sidebar_label: "[03] · Storage Lifecycle, Azure Files, Object Replication"
+---
+
+# AZ-104 Challenge 06: Project Deep Freeze - Storage Lifecycle, Azure Files, Object Replication
+
+**Series:** AZ-104 · Storage & Data Protection
+**Format:** Scenario-Based CTF Drill 
+**Difficulty:** Intermediate to Advanced
+**Exam alignment:** AZ-104 · AZ-500
+
 # 🚩 AZ-104 Challenge 06: Project Deep Freeze
 
 Contoso Ltd's quarterly storage bill review turned up three uncomfortable facts: years of application logs sitting untouched in the Hot tier, zero disaster-recovery copy of anything business-critical, and a finance team still sharing a single password to reach the old on-prem file server. Alice, your manager, hands you all three problems in one sprint — with a compliance audit six weeks out.
