@@ -17,6 +17,7 @@ const sidebars = {
       items: [
         'az-104-storage/01-storage-lifeline-sas-firewalls-keys',
         'az-104-storage/02-midnight-migration-ctf',
+        'az-104-storage/03-Storage-lifecycle-AzureFiles-Object-replication',
       ],
     },
     {
