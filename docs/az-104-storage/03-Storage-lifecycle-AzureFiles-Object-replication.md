@@ -1,10 +1,10 @@
 ---
 id: 03-storage-lifecycle-azurefiles-object-replication
-title: AZ-104 Challenge 06: Project Deep Freeze
+title: AZ Storage Project Deep Freeze - Storage Lifecycle, Azure Files, Object Replication
 sidebar_label: "[03] · Storage Lifecycle, Azure Files, Object Replication"
 ---
 
-# AZ-104 Challenge 06: Project Deep Freeze - Storage Lifecycle, Azure Files, Object Replication
+# AZ Storage Project Deep Freeze - Storage Lifecycle, Azure Files, Object Replication
 
 **Series:** AZ-104 · Storage & Data Protection
 **Format:** Scenario-Based CTF Drill 
@@ -13,7 +13,7 @@ sidebar_label: "[03] · Storage Lifecycle, Azure Files, Object Replication"
 
 ---
 
-# 🚩 AZ-104 Challenge 06: Project Deep Freeze
+# 🚩 AZ Storage Project Deep Freeze
 
 Contoso Ltd's quarterly storage bill review turned up three uncomfortable facts: years of application logs sitting untouched in the Hot tier, zero disaster-recovery copy of anything business-critical, and a finance team still sharing a single password to reach the old on-prem file server. Alice, your manager, hands you all three problems in one sprint — with a compliance audit six weeks out.
 
@@ -26,7 +26,7 @@ There are **5 Flags** to capture, plus **2 bonus flags** for the sharp-eyed. Eve
 
 ---
 
-## 🟢 Phase 1: Hardened Multi-Region Foundation
+##  Phase 1: Hardened Multi-Region Foundation
 
 **Objective:** Stand up two resource groups in two regions, each holding a StorageV2 account with security guardrails on from the first second — and bake in the two account-level settings Object Replication will need later, so you're not retrofitting them mid-project.
 
@@ -86,7 +86,7 @@ az storage account blob-service-properties update \
 
 **Flag 1 Captured: Foundation Fortified!**
 
-> **💰 Cost Callout — Two Accounts, Two Bills:** Every guardrail flag above (`--min-tls-version`, `--allow-blob-public-access false`, tags) is free. What isn't free is running two Hot-tier accounts in two regions from day one — you're paying the Hot-tier rate twice before a single old log gets tiered down in Phase 3. The tags aren't just labels either: `CostCenter=IT-001` is what lets Cost Management and Azure Advisor attribute this spend back to a team instead of showing up as an unexplained line item on someone else's budget.
+> **Cost Callout — Two Accounts, Two Bills:** Every guardrail flag above (`--min-tls-version`, `--allow-blob-public-access false`, tags) is free. What isn't free is running two Hot-tier accounts in two regions from day one — you're paying the Hot-tier rate twice before a single old log gets tiered down in Phase 3. The tags aren't just labels either: `CostCenter=IT-001` is what lets Cost Management and Azure Advisor attribute this spend back to a team instead of showing up as an unexplained line item on someone else's budget.
 
 ---
 
@@ -165,7 +165,7 @@ az storage blob upload \
 
 **Flag 2 Captured: Zero-Trust Data Seeded!**
 
-> **💰 Cost Callout — RBAC Is Free, the Logs Aren't:** The role assignments above cost nothing, same as every RBAC grant in this challenge. The real money is sitting in `app-logs`: ten tiny files today, but multiply that pattern by years of daily application logging and you get exactly the "storage bill review" that kicked off this whole sprint. Phase 3 is where that gets fixed — automatically, without anyone remembering to do it manually.
+> **Cost Callout — RBAC Is Free, the Logs Aren't:** The role assignments above cost nothing, same as every RBAC grant in this challenge. The real money is sitting in `app-logs`: ten tiny files today, but multiply that pattern by years of daily application logging and you get exactly the "storage bill review" that kicked off this whole sprint. Phase 3 is where that gets fixed — automatically, without anyone remembering to do it manually.
 
 ---
 
@@ -250,9 +250,9 @@ CleanupSnapshots          True
 
 > **⚠️ Gotcha:** Lifecycle management runs **once per day**, not in real time — and a newly-created or just-edited policy's first run can take up to 24 hours to start. You will not watch these logs tier down live in this lab; the win here is that the automation is correctly configured and verified, not that you can screenshot it happening. If you ever need an immediate tier change, that's `az storage blob set-tier`, not lifecycle management.
 
-> **💰 Cost Callout — This Is the Actual Savings:** This is the single biggest cost lever in this entire challenge. Hot-tier storage is the most expensive way to keep a byte sitting still; Cool cuts the per-GB rate noticeably, Archive cuts it by an order of magnitude again — and `DeleteAfter365Days` stops paying for data nobody will ever ask for. `CleanupSnapshots` matters just as much: without it, every snapshot and version this account accumulates keeps costing money forever, invisibly, since they don't show up when you're just eyeballing container contents.
+> **Cost Callout — This Is the Actual Savings:** This is the single biggest cost lever in this entire challenge. Hot-tier storage is the most expensive way to keep a byte sitting still; Cool cuts the per-GB rate noticeably, Archive cuts it by an order of magnitude again — and `DeleteAfter365Days` stops paying for data nobody will ever ask for. `CleanupSnapshots` matters just as much: without it, every snapshot and version this account accumulates keeps costing money forever, invisibly, since they don't show up when you're just eyeballing container contents.
 
-### 🎁 Bonus Flag 3B: The Rule That Actually Wins
+### Bonus Flag 3B: The Rule That Actually Wins
 
 > *Troubleshooting scenario: create a rule that moves blobs to Archive after 30 days, and another rule that moves the same blobs to Cool after 60 days. Which one wins?*
 
@@ -348,7 +348,7 @@ secure-share  50
 
 > **⚠️ Gotcha:** A storage account can't authenticate with Microsoft Entra ID *and* a second method (AD DS or Microsoft Entra Domain Services) at the same time — `--enable-files-aadkerb true` is mutually exclusive with those. Decide which identity model this account uses before you configure it, not after.
 
-> **💰 Cost Callout — Quota Is a Ceiling, Not a Reservation:** `secure-share` is a Standard (HDD-backed) file share billed on classic pay-as-you-go: you pay for the actual GiB stored, up to the 50 GiB quota — not for 50 GiB whether you use it or not. That's a meaningfully different model from Premium file shares, which bill for the *provisioned* capacity regardless of actual usage. The quota here is purely a spending guardrail against runaway growth, not a pre-paid allocation.
+> **Cost Callout — Quota Is a Ceiling, Not a Reservation:** `secure-share` is a Standard (HDD-backed) file share billed on classic pay-as-you-go: you pay for the actual GiB stored, up to the 50 GiB quota — not for 50 GiB whether you use it or not. That's a meaningfully different model from Premium file shares, which bill for the *provisioned* capacity regardless of actual usage. The quota here is purely a spending guardrail against runaway growth, not a pre-paid allocation.
 
 ---
 
@@ -433,9 +433,9 @@ az storage blob show \
 
 **Flag 5 Captured: Cross-Region Replication Live!**
 
-> **💰 Cost Callout — You're Paying for Two Things, Not One:** Object Replication has two separate cost consequences, and both are easy to miss when you're focused on getting the policy to work. First, storage cost: every replicated blob now exists twice, billed at whatever tier and redundancy each account uses independently — you don't get to "share" the cost across two accounts. Second, cross-region data transfer: bytes leaving `eastus` for `westus2` are billed as regional data-transfer egress, on top of and separate from the storage cost — check current Bandwidth pricing for the exact per-GB rate, since it varies by region pair. Compare that to a single GRS-enabled account: GRS already costs roughly double LRS for the same reason (a second copy exists), so two separate LRS accounts tied together with Object Replication typically land in a similar-or-higher cost range than one GRS account — the trade you're making is a genuinely writable, independently-controlled destination, not a cheaper backup.
+> **Cost Callout — You're Paying for Two Things, Not One:** Object Replication has two separate cost consequences, and both are easy to miss when you're focused on getting the policy to work. First, storage cost: every replicated blob now exists twice, billed at whatever tier and redundancy each account uses independently — you don't get to "share" the cost across two accounts. Second, cross-region data transfer: bytes leaving `eastus` for `westus2` are billed as regional data-transfer egress, on top of and separate from the storage cost — check current Bandwidth pricing for the exact per-GB rate, since it varies by region pair. Compare that to a single GRS-enabled account: GRS already costs roughly double LRS for the same reason (a second copy exists), so two separate LRS accounts tied together with Object Replication typically land in a similar-or-higher cost range than one GRS account — the trade you're making is a genuinely writable, independently-controlled destination, not a cheaper backup.
 
-### 🎁 Bonus Flag 5B: Debug a Silent Replication Failure
+### Bonus Flag 5B: Debug a Silent Replication Failure
 
 > *Troubleshooting scenario: the policy is configured, but blobs aren't showing up in the destination container. Where do you look?*
 
@@ -465,7 +465,7 @@ az storage account or-policy rule list \
 
 ---
 
-## 🔍 Troubleshooting Drills
+## Troubleshooting Drills
 
 Two more scenarios worth reasoning through, in the same checklist style as above — these are conceptual, not scripted, since they depend on a specific stored-access-policy or NTFS-ACL setup you'd build separately.
 
@@ -475,7 +475,7 @@ Two more scenarios worth reasoning through, in the same checklist style as above
 
 ---
 
-## 📝 AZ-104 Exam Prep: Storage Lifecycle & Replication
+## AZ-104 Exam Prep: Storage Lifecycle & Replication
 
 Six questions, six different formats — matching the mix you'll actually see on the exam. Answers and reasoning follow each one.
 
@@ -537,7 +537,7 @@ Six questions, six different formats — matching the mix you'll actually see on
 
 ---
 
-## 💰 Cost & Pricing Cheat Sheet
+## Cost & Pricing Cheat Sheet
 
 | Feature | Free to Enable? | What Actually Costs Money |
 |---|---|---|
@@ -593,9 +593,9 @@ rm -f log-*.txt repl-test.txt new-repl-data.txt
 | 1 | Foundation | Dual-region resource groups and storage accounts with security guardrails baked in from creation |
 | 2 | Zero-Trust Data | RBAC-based container access and seed data, no keys |
 | 3 | Lifecycle | A real 4-rule aging policy: Cool → Archive → Delete, plus snapshot/version cleanup |
-| 3B 🎁 | Lifecycle | The actual conflict-resolution rule — cheapest action wins, not first-triggered |
+| 3B| Lifecycle | The actual conflict-resolution rule — cheapest action wins, not first-triggered |
 | 4 | Identity Files | Entra Kerberos + share-scoped RBAC, and the two-layer permission model |
 | 5 | Replication | Wiring a destination-then-source policy correctly, with a matching Policy ID on both sides |
-| 5B 🎁 | Replication | A real failure-mode checklist for silent replication issues |
+| 5B| Replication | A real failure-mode checklist for silent replication issues |
 
 **Project "Deep Freeze" Complete!**
