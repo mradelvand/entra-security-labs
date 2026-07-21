@@ -22,6 +22,14 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: ' AZ-104 · Compute & Deployment',
+      link: { type: 'doc', id: 'az-104-compute/overview' },
+      items: [
+        'az-104-compute/01-arm-templates-bicep-iac',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Conditional Access',
       link: { type: 'doc', id: 'conditional-access/overview' },
       items: [
