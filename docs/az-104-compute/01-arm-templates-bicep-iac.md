@@ -35,22 +35,6 @@ Alice's ask is specific: "Take our first storage account and prove this actually
 - Convert an ARM template to a Bicep file
 - Preview changes to your infrastructure by using what-if
 
-> This is skill area **3.1** under **Deploy and manage Azure compute resources (20–25%)** on the current AZ-104 outline — a different domain than Azure Policy and RBAC, which is why this lives in its own series rather than folded into [Identities & Governance](../az-104-identities-governance/overview).
-
----
-
-## Sysadmin ↔ Azure Reference
-
-| Traditional / Sysadmin | Azure Equivalent | Notes |
-|---|---|---|
-| PowerShell/Bash provisioning scripts | ARM templates / Bicep files | Declarative, not imperative — you describe the end state |
-| Ansible playbooks | Bicep modules | Reusable, composable units of infrastructure |
-| Manual install documentation | The template itself | The code *is* the documentation |
-| Shell script positional args (`$1`, `$2`) | ARM/Bicep parameters | `--parameters environment=prod` |
-| `echo $RESULT` / script return values | ARM/Bicep outputs | Returned after deployment, consumable by the next step |
-| `dry-run` / `terraform plan` | `az deployment group what-if` | Preview before you commit |
-| `git diff` against the last known-good state | Exported ARM template | A snapshot of what's actually live, independent of source |
-
 ---
 
 ## Before You Start
@@ -60,9 +44,7 @@ This post assumes you already have:
 - The Bicep CLI available (`az bicep install`, then `az bicep version` to confirm)
 - Contributor or Owner on the subscription you're labbing in
 
-**New to Azure administration?** Complete the [Resource Manager domain challenges on azurecertprep](https://azurecertprep.github.io/docs/az-104/overview) first, then come back here.
 
-**Completed the [Azure Policy & Governance post](../az-104-identities-governance/03-azure-policy-governance)?** Keep `rg-az104-challenge03-prod` around — Part 8 below deploys directly into it on purpose.
 
 > **Cost Callout — What This Whole Lab Actually Costs:** the only billable resource in this entire post is a single empty `Standard_LRS` storage account — everything else (resource groups, deployments, what-if, export, policy, compilation) is free. Run through every part below and delete the resource group at the end (see Cleanup) and the total cost is effectively **$0**, not "cheap" — genuinely negligible fractions of a cent for an account holding no data. Each Part below flags the specific cost mechanics as they come up, and the [Cost Cheat Sheet](#cost-cheat-sheet) at the end consolidates all of them in one table.
 
@@ -119,19 +101,37 @@ If a resource group has a VM and you deploy a storage-account-only Bicep file in
 az group create --name rg-az104-challenge07 --location eastus
 ```
 
-Save this as `storage.bicep`:
-
+#### Bicep vs. ARM template: what actually goes in the file
+ 
+Before writing anything, it helps to see the two formats side by side — every Bicep file you'll ever write maps onto the same handful of ARM template sections, just with lighter syntax and two sections that disappear entirely:
+ 
+| Section | ARM Template (JSON) | Bicep | What it's for |
+|---|---|---|---|
+| Schema declaration | `$schema` | *(not needed)* | Tells the JSON parser which template-language version to validate the file against |
+| Template version | `contentVersion` | *(not needed)* | A version string you define yourself, for your own tracking — Azure doesn't enforce anything based on it |
+| Inputs | `parameters` (object) | `param` (one line per parameter) | Values supplied at deployment time — what makes a template reusable |
+| Internal values | `variables` (object) | `var` (one line per variable) | Calculated values kept out of the resources block, so it stays readable |
+| Infrastructure | `resources` (JSON array) | `resource` (one declaration per resource, each with its own symbolic name) | The actual thing being deployed — the only section that's mandatory in either format |
+| Return values | `outputs` (object) | `output` (one line per output) | Data handed back once the deployment finishes, consumable by the next step |
+| Reusable expressions | `functions` (array, rarely used in practice) | `func` | Custom expressions you can call repeatedly instead of duplicating the same logic in several places |
+ 
+The two rows with *(not needed)* aren't a Bicep limitation — they're solving a problem Bicep doesn't have. `$schema` and `contentVersion` exist in ARM JSON because JSON itself has no built-in concept of "which language version is this" or "what does this file mean" — the parser needs to be told. The Bicep compiler already knows both of those things about every file it compiles, so there's nothing left to declare. When `az bicep build` turns your `.bicep` file into JSON, it fills in `$schema` and `contentVersion` for you automatically.
+ 
+#### Now save the file
+ 
+Here's the actual content — the same skeleton described in the table above, with two parameters and one resource:
+ 
 ```bicep
 @description('Prefix for the storage account name')
 @minLength(3)
 @maxLength(11)
 param storagePrefix string
-
+ 
 param location string = resourceGroup().location
-
+ 
 @allowed(['dev', 'staging', 'prod'])
 param environment string = 'dev'
-
+ 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storagePrefix // placeholder — Part 2 fixes this
   location: location
@@ -144,10 +144,47 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
 }
 ```
-
+ 
+**Option A — Azure Cloud Shell** (matches how the rest of this series has been run):
+1. Open Cloud Shell — the `>_` icon in the Portal's top bar, or go directly to `https://shell.azure.com` — and pick **Bash**
+2. Select the **Open editor** icon (`{ }`) in the Cloud Shell toolbar
+3. **File** → **New File**, name it `storage.bicep`
+4. Paste in the code above
+5. `Ctrl+S` to save, then `Ctrl+Q` to close the editor and return to the terminal
+**Option B — a local terminal:**
+ 
+```bash
+cat > storage.bicep << 'EOF'
+@description('Prefix for the storage account name')
+@minLength(3)
+@maxLength(11)
+param storagePrefix string
+ 
+param location string = resourceGroup().location
+ 
+@allowed(['dev', 'staging', 'prod'])
+param environment string = 'dev'
+ 
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+  name: storagePrefix // placeholder — Part 2 fixes this
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    supportsHttpsTrafficOnly: true
+  }
+}
+EOF
+```
+ 
+If you're working locally rather than in Cloud Shell, install the [Bicep extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) first — it adds IntelliSense, inline validation, and hover documentation for every resource type, none of which the Cloud Shell editor has.
+ 
 Two parameters, one resource, nothing fancy yet. This is deliberately incomplete — the name is a raw pass-through of `storagePrefix`, which Part 2 is about to break on purpose.
-
+ 
 > **Cost Callout — Resource Groups Are Free:** `az group create` never touches your bill. A resource group is a management-plane container, not a billable resource — you can create, leave empty, and delete resource groups all day without any cost implication. Nothing in this lab starts costing anything until Part 3 actually succeeds at deploying the storage account.
+ 
 
 ---
 

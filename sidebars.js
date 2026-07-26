@@ -30,6 +30,14 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: ' MD-102 · Endpoint Management',
+      link: { type: 'doc', id: 'md-102-endpoint-management/overview' },
+      items: [
+        'md-102-endpoint-management/01-nodejs-win32-app-deployment-intune',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Conditional Access',
       link: { type: 'doc', id: 'conditional-access/overview' },
       items: [
