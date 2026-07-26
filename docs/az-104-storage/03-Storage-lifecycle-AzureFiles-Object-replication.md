@@ -485,7 +485,7 @@ Six questions, six different formats — matching the mix you'll actually see on
 　C. Once per day, with no guaranteed exact time — and up to 24 hours for a brand-new policy's first run
 　D. Once per week
 
-<br>
+
 
 *Answer: C. There's no SLA on the exact time of day, and lifecycle management is not suitable for scenarios that need an immediate tier change — that's `az storage blob set-tier` instead.*
 
@@ -496,7 +496,7 @@ Six questions, six different formats — matching the mix you'll actually see on
 　D. Both accounts must be StorageV2 (GPv2) or BlobStorage
 　E. Both accounts must be in the same Azure region
 
-<br>
+
 
 *Answer: A, B, C, D. Source and destination can be in different regions and even different subscriptions or tenants (with `AllowCrossTenantReplication` enabled) — same-region is not a requirement.*
 
@@ -506,7 +506,7 @@ Six questions, six different formats — matching the mix you'll actually see on
 　C. NTFS directory-level ACLs on that specific subfolder are independently restricting access — effective permission is the intersection of RBAC and NTFS ACLs
 　D. Shared key access is disabled on the storage account
 
-<br>
+
 
 *Answer: C. This is the two-layer identity model for Azure Files: share-level RBAC controls access to the share as a whole, but NTFS ACLs configured after mounting control access within it. A colleague with the same role isn't necessarily subject to the same folder-level ACL.*
 
@@ -523,13 +523,13 @@ Six questions, six different formats — matching the mix you'll actually see on
 
 **5. True/False.** If a blob simultaneously qualifies for both a "tier to Archive" action and a "delete" action under a lifecycle policy, Azure applies whichever rule was defined *first* in the policy JSON.
 
-<br>
+
 
 *Answer: False. Rule order in the JSON is irrelevant. Azure always applies the least expensive qualifying action — cost order is Delete → Archive → Cool → Hot — regardless of which condition was satisfied first chronologically or which rule appears first in the document. See Bonus Flag 3B above for a worked example where this actually changes the outcome.*
 
 **6. Short Answer.** You need to replicate blobs from a storage account in Subscription A to one in Subscription B, owned by a different team. Is this supported, and which account do you configure first?
 
-<br>
+
 
 *Answer: Yes — Object Replication supports cross-subscription replication, and even cross-tenant replication if `AllowCrossTenantReplication` is enabled on the source account. The policy is always created on the destination account first (it's the one that references the source), and the identical policy — same Policy ID — is then registered on the source account second.*
 
